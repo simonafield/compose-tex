@@ -1,0 +1,103 @@
+name: ${COMPOSE_PROJECT_NAME:-compiler-cover-letter}
+
+services:
+  # ================
+  # Base Service
+  # ================
+  texlive-base: &texlive-base
+    image: texlive/texlive:latest
+    user: "${UID}:${GID}"
+    working_dir: /texlive
+    volumes:
+      - ..:/texlive
+      - texlive-data:/usr/local/texlive
+
+  # ===============
+  # Update TeX Live
+  # ===============
+  update:
+    <<: *texlive-base
+    user: "0:0"
+    x-description: "Update TeX Live packages using tlmgr."
+    command: sh -c "tlmgr option repository "https://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet" && tlmgr update --self --all"
+
+  # ================
+  # Compile Option 1 - pdflatex
+  # ================
+
+  compile-opt1:
+    <<: *texlive-base
+    x-description: "Compile main.tex using pdflatex."
+    command: sh -c "pdflatex -output-directory=$${OUTPUTDIR} -interaction=nonstopmode $${INPUTDIR}/$${FILE_NAME}.tex"
+
+  # ================
+  # Compile Option 2 - latexmk (pdflatex)
+  # ================
+
+  compile-opt2:
+    <<: *texlive-base
+    x-description: "Compile main.tex using latexmk (pdflatex)."
+    command: sh -c "latexmk -pdf -output-directory=$${OUTPUTDIR} -interaction=nonstopmode $${INPUTDIR}/$${FILE_NAME}.tex"
+
+  # ================
+  # Compile Option 3 - latexmk (dvi) + dvips + ps2pdf
+  # ================
+
+  compile-opt3:
+    <<: *texlive-base
+    x-description: "Compile main.tex using latexmk (dvi) and convert PostScript to PDF."
+    command: >
+      sh -c " latexmk -dvi -output-directory=$${OUTPUTDIR} -interaction=nonstopmode $${INPUTDIR}/$${FILE_NAME}.tex && \ dvips $${OUTPUTDIR}/$${FILE_NAME}.dvi -o $${OUTPUTDIR}/$${FILE_NAME}.ps && \ ps2pdf $${OUTPUTDIR}/$${FILE_NAME}.ps $${OUTPUTDIR}/$${FILE_NAME}.pdf"
+
+  # ================
+  # Compile Option 4 - xelatex
+  # ================
+
+  compile-opt4:
+    <<: *texlive-base
+    user: "0:0"
+    x-description: "Compile main.tex using xelatex."
+    command: sh -c "xelatex -output-directory=$${OUTPUTDIR} -interaction=nonstopmode $${INPUTDIR}/$${FILE_NAME}.tex"
+
+  # ================
+  # Compile Option 5 - lualatex
+  # ================
+
+  compile-opt5:
+    <<: *texlive-base
+    user: "0:0"
+    x-description: "Compile main.tex using lualatex."
+    command: sh -c "lualatex -output-directory=$${OUTPUTDIR} -interaction=nonstopmode $${INPUTDIR}/$${FILE_NAME}.tex"
+
+  # ================
+  # Utility
+  # ================
+  alpine: &alpine
+    container_name: alpine
+    image: alpine:3
+    user: "${UID}:${GID}"
+    volumes:
+      - ..:/texlive
+    working_dir: /texlive
+
+  alpine-volume:
+    <<: *alpine
+    container_name: alpine-volume
+    stdin_open: true
+    tty: true
+    volumes:
+      - ..:/data/texlive
+      - texlive-data:/data/install
+    working_dir: /data
+    command: sh
+
+  cleanup:
+    <<: *alpine
+    container_name: cleanup
+    command: sh -c "rm -rf build && mkdir build"
+
+volumes:
+  texlive-data:
+    name: "texlive-data"
+    labels:
+      description: "Persistent storage for TeX Live data to speed up subsequent builds."
