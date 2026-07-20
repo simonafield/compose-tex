@@ -3,7 +3,8 @@ updates:
   - package-ecosystem: "docker-compose"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "cron"
+      cronjob: "0 0 * * *"
     target-branch: "main"
     commit-message:
       prefix: "dependabot"
