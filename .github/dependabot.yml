@@ -9,3 +9,13 @@ updates:
     commit-message:
       prefix: "dependabot"
       include: "scope"
+
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "0 0 * * *"
+    target-branch: "main"
+    commit-message:
+      prefix: "dependabot"
+      include: "scope"

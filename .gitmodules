@@ -1,0 +1,3 @@
+[submodule "compose-util"]
+	path = compose-util
+	url = https://github.com/simonafield/compose-util.git

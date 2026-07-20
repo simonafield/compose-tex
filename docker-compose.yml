@@ -1,4 +1,4 @@
-name: personal
+name: compose
 
 services:
   # ================
@@ -72,29 +72,17 @@ services:
   # ================
   # Utility
   # ================
-  alpine: &alpine
-    container_name: alpine
-    image: alpine:3
-    user: "${UID}:${GID}"
-    volumes:
-      - ..:/texlive
-    working_dir: /texlive
-
   alpine-volume:
-    <<: *alpine
+    extends:
+      file: docker-compose-util.yml
+      service: alpine
     container_name: alpine-volume
     stdin_open: true
     tty: true
     volumes:
-      - ..:/data/texlive
-      - texlive-data:/data/install
-    working_dir: /data
+      - texlive-data:/mnt/texlive-data
+    working_dir: /mnt
     command: sh
-
-  cleanup:
-    <<: *alpine
-    container_name: cleanup
-    command: sh -c "rm -rf build && mkdir build"
 
 volumes:
   texlive-data:

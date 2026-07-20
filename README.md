@@ -138,25 +138,13 @@ docker-compose \
 
 ---
 
-### [`alpine`](./docker-compose.yml#L75)
-
-**Description:** A minimal Alpine Linux container with your local project directory mounted into `/texlive`.
-
-**Example:**
-```bash
-docker-compose \
-    --env-file .env \                   # Include Environment Variables
-    -f compose-tex/docker-compose.yml \ # Include Base Compose File
-    run --rm \                          # Run Container then Remove
-    alpine \                            # Run Service
-    ls -la                              # Command to Run
-```
-
----
-
 ### [`alpine-volume`](./docker-compose.yml#L83)
 
 **Description:** An interactive Alpine container mounting both your local project and the persistent [texlive-data](#texlive-data) volume.
+
+The local directory is mounted in `/data`.
+
+The [texlive-data](#texlive-data) volume is mounted in `/mnt/texlive-data`
 
 **Example:**
 ```bash
@@ -165,21 +153,6 @@ docker-compose \
     -f compose-tex/docker-compose.yml \ # Include Base Compose File
     run --rm \                          # Run Container then Remove
     alpine-volume                       # Run Service
-```
-
----
-
-### [`cleanup`](./docker-compose.yml#L94)
-
-**Description:** Forcefully removes the local `build` directory and recreates an empty one.
-
-**Example:**
-```bash
-docker-compose \
-    --env-file .env \                   # Include Environment Variables
-    -f compose-tex/docker-compose.yml \ # Include Base Compose File
-    run --rm \                          # Run Container then Remove
-    cleanup                             # Run Service
 ```
 
 ## Volumes
