@@ -25,13 +25,13 @@ In the following examples, the `UID` and `GID` values are stored in an `.env` fi
 
 ### `texlive-base`
 
-**Description:** A base class defining the core TeX Live image (`texlive/texlive:latest`). This service isn't intended to be invoked directly, but rather extended and reused by other services (inheritance).
+**Description:** A base class defining the core [TeX Live](https://gitlab.com/islandoftex/images/texlive) image (`texlive/texlive:latest`). This service isn't intended to be invoked directly, but rather extended and reused by other services (inheritance).
 
 ---
 
 ### `update`
 
-**Description:** Runs `tlmgr` (the TeX Live package manager) to update all installed LaTeX packages inside the [texlive-data](#texlive-data) volume.
+**Description:** Runs `tlmgr` (the [TeX Live](https://gitlab.com/islandoftex/images/texlive) package manager) to update all installed LaTeX packages inside the [texlive-data](#texlive-data) volume.
 
 **Example:**
 ```bash
@@ -186,6 +186,6 @@ docker-compose \
 
 ### texlive-data
 
-**Description:** Persistent storage for TeX Live data to speed up subsequent builds.
+**Description:** Persistent storage for [TeX Live](https://gitlab.com/islandoftex/images/texlive) data to speed up subsequent builds.
 
 Access this volume by running the [alpine-volume](#alpine-volume) service.
