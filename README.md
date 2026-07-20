@@ -138,7 +138,7 @@ docker-compose \
 
 ---
 
-### [`alpine-volume`](./docker-compose.yml#L83)
+### [`alpine-volume`](./docker-compose.yml#L75)
 
 **Description:** An interactive Alpine container mounting both your local project and the persistent [texlive-data](#texlive-data) volume.
 
@@ -157,7 +157,7 @@ docker-compose \
 
 ## Volumes
 
-### [texlive-data](./docker-compose.yml#L100)
+### [texlive-data](./docker-compose.yml#L88)
 
 **Description:** Persistent storage for [TeX Live](https://gitlab.com/islandoftex/images/texlive) data to speed up subsequent builds.
 
