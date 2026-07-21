@@ -23,13 +23,13 @@ In the following examples, the `UID` and `GID` values are stored in an `.env` fi
 
 ## Services
 
-### [`texlive-base`](./docker-compose.yml#L7)
+### [`texlive-base`](./compose-tex/docker-compose.yml#L7)
 
 **Description:** A base class defining the core [TeX Live](https://gitlab.com/islandoftex/images/texlive) image (`texlive/texlive:latest`). This service isn't intended to be invoked directly, but rather extended and reused by other services (inheritance).
 
 ---
 
-### [`update`](./docker-compose.yml#L18)
+### [`update`](./compose-tex/docker-compose.yml#L18)
 
 **Description:** Runs `tlmgr` (the [TeX Live](https://gitlab.com/islandoftex/images/texlive) package manager) to update all installed LaTeX packages inside the [texlive-data](#texlive-data) volume.
 
@@ -44,7 +44,7 @@ docker-compose \
 
 ---
 
-### [`compile-opt1`](./docker-compose.yml#L28) ([pdflatex](https://en.wikipedia.org/wiki/PdfTeX))
+### [`compile-opt1`](./compose-tex/docker-compose.yml#L28) ([pdflatex](https://en.wikipedia.org/wiki/PdfTeX))
 
 **Description:** Compiles your `.tex` document directly to a PDF using the standard `pdflatex` engine.
 
@@ -62,7 +62,7 @@ docker-compose \
 
 ---
 
-### [`compile-opt2`](./docker-compose.yml#L37) ([latexmk](https://ctan.org/pkg/latexmk) with [pdflatex](https://en.wikipedia.org/wiki/PdfTeX))
+### [`compile-opt2`](./compose-tex/docker-compose.yml#L37) ([latexmk](https://ctan.org/pkg/latexmk) with [pdflatex](https://en.wikipedia.org/wiki/PdfTeX))
 
 **Description:** Compiles your `.tex` document using `latexmk` configured for `pdflatex`.
 
@@ -80,7 +80,7 @@ docker-compose \
 
 ---
 
-### [`compile-opt3`](./docker-compose.yml#L46) ([latexmk](https://ctan.org/pkg/latexmk) -> [dvips](https://ctan.org/pkg/dvips) -> [ps2pdf](https://web.mit.edu/ghostscript/www/Ps2pdf.htm) -> pdf)
+### [`compile-opt3`](./compose-tex/docker-compose.yml#L46) ([latexmk](https://ctan.org/pkg/latexmk) -> [dvips](https://ctan.org/pkg/dvips) -> [ps2pdf](https://web.mit.edu/ghostscript/www/Ps2pdf.htm) -> pdf)
 
 **Description:** A traditional `.tex` build pipeline.
 
@@ -102,7 +102,7 @@ docker-compose \
 
 ---
 
-### [`compile-opt4`](./docker-compose.yml#L56) ([xelatex](https://en.wikipedia.org/wiki/XeTeX))
+### [`compile-opt4`](./compose-tex/docker-compose.yml#L56) ([xelatex](https://en.wikipedia.org/wiki/XeTeX))
 
 **Description:** Compiles your `.tex` document using `xelatex`.
 
@@ -120,7 +120,7 @@ docker-compose \
 
 ---
 
-### [`compile-opt5`](./docker-compose.yml#L66) ([lualatex](https://en.wikipedia.org/wiki/LuaTeX))
+### [`compile-opt5`](./compose-tex/docker-compose.yml#L66) ([lualatex](https://en.wikipedia.org/wiki/LuaTeX))
 
 **Description:** Compiles your document using the `lualatex` engine, embedding the Lua scripting language.
 
@@ -138,13 +138,14 @@ docker-compose \
 
 ---
 
-### [`alpine-volume`](./docker-compose.yml#L75)
+### [`alpine-volume`](./compose-tex/docker-compose.yml#L75)
 
 **Description:** An interactive Alpine container mounting both your local project and the persistent [texlive-data](#texlive-data) volume.
 
-The local directory is mounted in `/data`.
+- The local directory is mounted in `/data`.
+- The [texlive-data](#texlive-data) volume is mounted in `/mnt/texlive-data`
 
-The [texlive-data](#texlive-data) volume is mounted in `/mnt/texlive-data`
+The `alpine-volume` service can be started with [volume.sh](./volume.sh).
 
 **Example:**
 ```bash
@@ -157,7 +158,7 @@ docker-compose \
 
 ## Volumes
 
-### [texlive-data](./docker-compose.yml#L88)
+### [texlive-data](./compose-tex/docker-compose.yml#L88)
 
 **Description:** Persistent storage for [TeX Live](https://gitlab.com/islandoftex/images/texlive) data to speed up subsequent builds.
 
