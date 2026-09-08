@@ -9,6 +9,8 @@ updates:
     commit-message:
       prefix: "dependabot"
       include: "scope"
+    cooldown:
+      default-days: 1
 
   - package-ecosystem: "gitsubmodule"
     directory: "/"
@@ -19,3 +21,5 @@ updates:
     commit-message:
       prefix: "dependabot"
       include: "scope"
+    cooldown:
+      default-days: 1
